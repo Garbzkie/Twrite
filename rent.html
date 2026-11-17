@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Submit a room or unit listing to RENTME for student renters to discover.">
+    <meta name="theme-color" content="#1A428A">
+    <title>Rent Out a Room or Unit | RENTME</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" href="index.html#home" aria-label="RENTME home">
+                <svg class="brand-icon" viewBox="0 0 48 48" aria-hidden="true">
+                    <path d="M5.5 22.2 24 7l18.5 15.2M11 20v20h26V20M20 40V27h8v13" />
+                </svg>
+                <span class="brand-wordmark">
+                    <strong>RENTME</strong>
+                    <small>Your Budget, Your Place.</small>
+                </span>
+            </a>
+            <nav class="primary-nav" aria-label="Main navigation">
+                <a class="nav-link" href="index.html">Home</a>
+                <a class="nav-link" href="findlodging.html">Find Lodging</a>
+                <a class="nav-link is-current" id="owner-rent-nav" href="rent.html" aria-current="page" hidden>Rent Out</a>
+                <a class="nav-link" href="aboutus.html">About Us</a>
+                <a class="nav-link" href="tips.html">Tips for Students</a>
+                <a class="nav-link" href="contact.html">Contact Us</a>
+                <a class="nav-link" href="faq.html">FAQ</a>
+                <a class="nav-link" id="login-nav" href="login.html">Log In</a>
+                <a class="nav-link" id="logout-nav" href="index.html" hidden>Log Out</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content" tabindex="-1" data-owner-only hidden>
+        <section class="rent-page" aria-labelledby="rent-title">
+            <div class="rent-container">
+                <header class="lodging-heading">
+                    <p class="eyebrow">Have a place for a student?</p>
+                    <h1 id="rent-title">Rent Out a Room or Unit</h1>
+                    <p>Share your property details with RENTME and our team will follow up about your listing.</p>
+                </header>
+
+                <form class="owner-listing-form" id="owner-listing-form">
+                    <div class="owner-form-grid">
+                        <label class="reservation-field">
+                            Listing title
+                            <input type="text" name="title" maxlength="80" placeholder="e.g. Furnished room near campus" required>
+                        </label>
+                        <label class="reservation-field">
+                            Property type
+                            <select name="propertyType" required>
+                                <option value="Room">Room</option>
+                                <option value="Unit / apartment">Unit / apartment</option>
+                            </select>
+                        </label>
+                        <label class="reservation-field">
+                            Location
+                            <input type="text" name="location" maxlength="120" placeholder="City, neighborhood, or nearby school" required>
+                        </label>
+                        <label class="reservation-field">
+                            Monthly rent (₱)
+                            <input type="number" name="monthlyRent" min="1" step="1" inputmode="numeric" required>
+                        </label>
+                        <label class="reservation-field">
+                            Your name
+                            <input type="text" name="ownerName" autocomplete="name" maxlength="80" required>
+                        </label>
+                        <label class="reservation-field">
+                            Contact email
+                            <input type="email" name="ownerEmail" autocomplete="email" maxlength="254" required>
+                        </label>
+                        <label class="reservation-field owner-form-wide">
+                            Property details
+                            <textarea name="details" rows="5" maxlength="1000" placeholder="Describe the space, amenities, availability, and any rental terms." required></textarea>
+                        </label>
+                    </div>
+                    <p class="owner-form-note">Submitting prepares an email to RENTME. Your listing is not published until our team contacts you and verifies the details. Do not include passwords or sensitive personal information.</p>
+                    <button class="reserve-submit" type="submit">Prepare Listing Submission</button>
+                    <p class="reservation-status" id="listing-status" aria-live="polite"></p>
+                    <a class="reservation-email-link" id="listing-email-link" href="#" hidden>Open your email to send the listing</a>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="lodging-footer">
+        <div class="section-container">
+            <span>© 2026 RENTME. All rights reserved.</span>
+            <a href="index.html#contact">Need help? Contact us</a>
+        </div>
+    </footer>
+
+    <script>
+        const ownerListingForm = document.querySelector("#owner-listing-form");
+        const listingStatus = document.querySelector("#listing-status");
+        const listingEmailLink = document.querySelector("#listing-email-link");
+
+        ownerListingForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            if (!ownerListingForm.reportValidity()) return;
+
+            const formData = new FormData(ownerListingForm);
+            const title = String(formData.get("title")).trim();
+            const subject = `Property listing submission: ${title}`;
+            const body = [
+                `Listing title: ${title}`,
+                `Property type: ${formData.get("propertyType")}`,
+                `Location: ${String(formData.get("location")).trim()}`,
+                `Monthly rent: ₱${formData.get("monthlyRent")}`,
+                `Owner name: ${String(formData.get("ownerName")).trim()}`,
+                `Contact email: ${String(formData.get("ownerEmail")).trim()}`,
+                "",
+                "Property details:",
+                String(formData.get("details")).trim()
+            ].join("\n");
+
+            listingEmailLink.href = `mailto:rentme.info@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            listingEmailLink.hidden = false;
+            listingStatus.textContent = "Your listing submission is ready. Open your email to send it to RENTME.";
+            listingEmailLink.focus();
+        });
+    </script>
+    <script src="auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find affordable lodging, boarding houses, and rooms near your school with RENTME.">
+    <meta name="theme-color" content="#1A428A">
+    <title>RENTME | Your Budget, Your Place.</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" href="#home" aria-label="RENTME — Your Budget, Your Place">
+                <svg class="brand-icon" viewBox="0 0 48 48" aria-hidden="true">
+                    <path d="M5.5 22.2 24 7l18.5 15.2M11 20v20h26V20M20 40V27h8v13" />
+                </svg>
+                <span class="brand-wordmark">
+                    <strong>RENTME</strong>
+                    <small>Your Budget, Your Place.</small>
+                </span>
+            </a>
+            <nav class="primary-nav" aria-label="Main navigation">
+                <a class="nav-link is-current" href="index.html" aria-current="page">Home</a>
+                <a class="nav-link" href="findlodging.html">Find Lodging</a>
+                <a class="nav-link" id="owner-rent-nav" href="rent.html" hidden>Rent Out</a>
+                <a class="nav-link" href="aboutus.html">About Us</a>
+                <a class="nav-link" href="tips.html">Tips for Students</a>
+                <a class="nav-link" href="contact.html">Contact Us</a>
+                <a class="nav-link" href="faq.html">FAQ</a>
+                <a class="nav-link" id="login-nav" href="login.html">Log In</a>
+                <a class="nav-link" id="logout-nav" href="index.html" hidden>Log Out</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content" tabindex="-1">
+        <!-- Intro and primary lodging search link -->
+        <section class="hero" id="home" aria-labelledby="hero-title">
+            <div class="hero-inner">
+                <div class="hero-copy">
+                    <p class="eyebrow"><span class="eyebrow-dot"></span> A better start to student life</p>
+                    <h1 id="hero-title">
+                        FIND YOUR HOME<br>
+                        AWAY FROM HOME!
+                    </h1>
+                    <p class="hero-lead">A place to stay near school shouldn’t stretch your budget.</p>
+                    <p>RENTME helps students discover affordable rooms, boarding houses, and lodging close to campus. Compare your options, find a place that fits your needs, and feel more at home while you study.</p>
+                    <div class="hero-actions">
+                        <a class="button button-primary" href="findlodging.html">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <circle cx="10.8" cy="10.8" r="6.4" />
+                                <path d="m15.5 15.5 4.2 4.2" />
+                            </svg>
+                            Find Your Lodging
+                        </a>
+                        <a class="button button-outline" id="owner-rent-cta" href="rent.html" hidden>List a Room or Unit</a>
+                        <a class="button button-outline" href="aboutus.html">Learn More About Us</a>
+                    </div>
+                    <div class="hero-trust"><span class="trust-check" aria-hidden="true">✓</span> Student-focused. Budget-conscious. Close to campus.</div>
+                </div>
+                <div class="hero-visual">
+                    <img
+                        src="homepage-room.webp"
+                        alt="Bright bedroom with a bed, window, and natural light"
+                        fetchpriority="high"
+                    >
+                    <div class="photo-caption">
+                        <span class="caption-icon" aria-hidden="true">⌂</span>
+                        <span>
+                            <strong>Your next chapter starts here</strong>
+                            <small>Find a place that feels right.</small>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="auth.js"></script>
+</body>
+</html>
