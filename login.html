@@ -103,6 +103,7 @@
         const registerSubmitButton = document.querySelector("#register-submit-button");
         const loginForm = document.querySelector("#login-form");
         const registerForm = document.querySelector("#register-form");
+        const returnToLodging = new URLSearchParams(window.location.search).get("returnTo") === "findlodging.html";
         let accountType = new URLSearchParams(window.location.search).get("account") === "landlord" ? "landlord" : "student";
         let authMode = "login";
 
@@ -146,7 +147,7 @@
                 event.preventDefault();
                 if (!form.reportValidity()) return;
                 sessionStorage.setItem("rentmeRole", accountType === "landlord" ? "owner" : "student");
-                window.location.href = "index.html";
+                window.location.href = accountType === "student" && returnToLodging ? "findlodging.html" : "index.html";
             });
         }
 
@@ -164,7 +165,7 @@
             confirmation.setCustomValidity(password.value === confirmation.value ? "" : "Passwords must match.");
             if (!registerForm.reportValidity()) return;
             sessionStorage.setItem("rentmeRole", accountType === "landlord" ? "owner" : "student");
-            window.location.href = "index.html";
+            window.location.href = accountType === "student" && returnToLodging ? "findlodging.html" : "index.html";
         });
 
         document.querySelector("#register-confirm-password").addEventListener("input", (event) => {
