@@ -91,7 +91,7 @@
 
                     <div class="lodging-results" aria-live="polite">
                         <p class="results-count" id="results-count">3 places to explore</p>
-                        <article class="lodging-card" data-location="near uclm" data-map-query="Near UCLM, Cebu, Philippines" data-price="2500" data-type="shared" data-amenities="wifi laundry">
+                        <article class="lodging-card" data-listing-id="student-dormitory" data-location="near uclm" data-map-query="Near UCLM, Cebu, Philippines" data-price="2500" data-type="shared" data-amenities="wifi laundry">
                             <img src="student-dormitory.png" alt="Empty, freshly painted room with a window" loading="lazy">
                             <div class="lodging-card-copy">
                                 <div class="lodging-card-title">
@@ -109,7 +109,7 @@
                                 </div>
                             </div>
                         </article>
-                        <article class="lodging-card" data-location="mandaue city" data-map-query="Mandaue City, Cebu, Philippines" data-price="3000" data-type="single" data-amenities="wifi ac">
+                        <article class="lodging-card" data-listing-id="cozy-room" data-location="mandaue city" data-map-query="Mandaue City, Cebu, Philippines" data-price="3000" data-type="single" data-amenities="wifi ac">
                             <img src="cozy-room.jpeg" alt="Bright empty bedroom with an attic ceiling and wood floors" loading="lazy">
                             <div class="lodging-card-copy">
                                 <div class="lodging-card-title">
@@ -127,7 +127,7 @@
                                 </div>
                             </div>
                         </article>
-                        <article class="lodging-card" data-location="maguikay" data-map-query="Maguikay, Mandaue City, Cebu, Philippines" data-price="3200" data-type="single" data-amenities="wifi laundry">
+                        <article class="lodging-card" data-listing-id="affordable-stay" data-location="maguikay" data-map-query="Maguikay, Mandaue City, Cebu, Philippines" data-price="3200" data-type="single" data-amenities="wifi laundry">
                             <img src="affordable-stay.png" alt="Empty room with hardwood floors and large windows" loading="lazy">
                             <div class="lodging-card-copy">
                                 <div class="lodging-card-title">
@@ -243,7 +243,13 @@
         const reservationCheckout = document.querySelector("#reservation-checkout");
         const reservationStatus = document.querySelector("#reservation-status");
         const reservationEmailLink = document.querySelector("#reservation-email-link");
+        const unavailableListingIds = new Set(
+            cards
+                .filter((card) => localStorage.getItem(`rentme-unavailable-${card.dataset.listingId}`) === "true")
+                .map((card) => card.dataset.listingId)
+        );
         let reservationIntent = "rental";
+        let selectedListingCard = null;
 
         function filterLodging() {
             const formData = new FormData(searchForm);
@@ -260,7 +266,8 @@
                     return price >= minimum && price <= maximum;
                 });
                 const cardAmenities = card.dataset.amenities.split(" ");
-                const matches = (!location || card.dataset.location.includes(location))
+                const matches = !unavailableListingIds.has(card.dataset.listingId)
+                    && (!location || card.dataset.location.includes(location))
                     && matchesPrice
                     && (types.length === 0 || types.includes(card.dataset.type))
                     && amenities.every((amenity) => cardAmenities.includes(amenity));
@@ -304,6 +311,7 @@
             if (!button) return;
 
             const card = button.closest(".lodging-card");
+            selectedListingCard = card;
             const listingName = card.querySelector("h2").textContent;
             const price = card.querySelector(".listing-price").textContent.trim();
             const today = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
@@ -362,6 +370,16 @@
             reservationEmailLink.focus();
         });
 
+        reservationEmailLink.addEventListener("click", () => {
+            if (reservationIntent !== "rental" || !selectedListingCard) return;
+
+            const listingId = selectedListingCard.dataset.listingId;
+            localStorage.setItem(`rentme-unavailable-${listingId}`, "true");
+            unavailableListingIds.add(listingId);
+            filterLodging();
+            reservationStatus.textContent = "This place is now hidden from your results on this device. The rental request is not confirmed until the owner responds.";
+        });
+
         locationDialog.querySelector(".map-dialog-close").addEventListener("click", () => locationDialog.close());
         locationDialog.addEventListener("click", (event) => {
             if (event.target === locationDialog) locationDialog.close();
@@ -370,6 +388,7 @@
         reservationDialog.addEventListener("click", (event) => {
             if (event.target === reservationDialog) reservationDialog.close();
         });
+        filterLodging();
     </script>
     <script src="auth.js"></script>
 </body>
