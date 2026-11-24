@@ -5,7 +5,6 @@ const ownerRentCallToAction = document.querySelector("#owner-rent-cta");
 const loginLink = document.querySelector("#login-nav");
 const logoutLink = document.querySelector("#logout-nav");
 const ownerOnlyContent = document.querySelector("[data-owner-only]");
-const authenticatedContent = document.querySelector("[data-authenticated-only]");
 
 if (ownerRentLink) ownerRentLink.hidden = !isOwner;
 if (ownerRentCallToAction) ownerRentCallToAction.hidden = !isOwner;
@@ -27,10 +26,3 @@ if (ownerOnlyContent) {
     }
 }
 
-if (authenticatedContent) {
-    if (currentRole === "student" || isOwner) {
-        authenticatedContent.hidden = false;
-    } else {
-        window.location.replace("login.html?account=student&returnTo=findlodging.html");
-    }
-}
