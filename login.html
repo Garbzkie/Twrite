@@ -33,7 +33,7 @@
             </a>
             <h1 id="login-title">Welcome Back!</h1>
             <p class="login-subtitle" id="login-subtitle">Log in to your RENTME account</p>
-            <p class="login-demo-note">Demo only: this page does not authenticate users or save accounts. A valid submission sets a role for this browser session only; do not use it to protect real account data.</p>
+            <p class="login-demo-note">Demo only: this page does not authenticate users or save accounts. Log in with “Remember Me” checked to keep the selected demo role across tabs and browser restarts; otherwise, it lasts for this tab session. Do not use it to protect real account data.</p>
 
             <div class="account-type-select" role="group" aria-label="Account type">
                 <button class="auth-tab is-active" id="student-account" type="button" aria-pressed="true">Student</button>
@@ -55,7 +55,7 @@
                     <input type="password" autocomplete="current-password" placeholder="Enter your password" required>
                 </label>
                 <div class="login-options">
-                    <label><input type="checkbox"> Remember Me</label>
+                    <label><input id="remember-me" type="checkbox" checked> Remember Me</label>
                     <a href="mailto:rentme.info@gmail.com?subject=Password%20reset%20assistance">Forgot Password?</a>
                 </div>
                 <button class="login-submit" id="login-submit-button" type="submit">Log In</button>
@@ -103,6 +103,7 @@
         const registerSubmitButton = document.querySelector("#register-submit-button");
         const loginForm = document.querySelector("#login-form");
         const registerForm = document.querySelector("#register-form");
+        const rememberMe = document.querySelector("#remember-me");
         const returnToLodging = new URLSearchParams(window.location.search).get("returnTo") === "findlodging.html";
         let accountType = new URLSearchParams(window.location.search).get("account") === "landlord" ? "landlord" : "student";
         let authMode = "login";
@@ -142,11 +143,18 @@
             updateAuthCopy();
         }
 
+        function saveRole(remember) {
+            const role = accountType === "landlord" ? "owner" : "student";
+            localStorage.removeItem("rentmeRole");
+            sessionStorage.removeItem("rentmeRole");
+            (remember ? localStorage : sessionStorage).setItem("rentmeRole", role);
+        }
+
         function returnHomeAfterSubmit(form) {
             form.addEventListener("submit", (event) => {
                 event.preventDefault();
                 if (!form.reportValidity()) return;
-                sessionStorage.setItem("rentmeRole", accountType === "landlord" ? "owner" : "student");
+                saveRole(rememberMe.checked);
                 window.location.href = returnToLodging ? "findlodging.html" : "index.html";
             });
         }
@@ -164,7 +172,7 @@
             const confirmation = document.querySelector("#register-confirm-password");
             confirmation.setCustomValidity(password.value === confirmation.value ? "" : "Passwords must match.");
             if (!registerForm.reportValidity()) return;
-            sessionStorage.setItem("rentmeRole", accountType === "landlord" ? "owner" : "student");
+            saveRole(false);
             window.location.href = returnToLodging ? "findlodging.html" : "index.html";
         });
 
