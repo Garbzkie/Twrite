@@ -364,20 +364,17 @@
                 `Move-out date: ${formData.get("checkout")}`
             ].join("\n");
 
-            reservationEmailLink.href = `mailto:rentme.info@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            reservationEmailLink.href = `mailto:rentme.infos@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             reservationEmailLink.hidden = false;
             reservationStatus.textContent = `Your ${requestType.toLowerCase()} request is ready. Open your email to send it to RENTME.`;
+            if (reservationIntent === "rental" && selectedListingCard) {
+                const listingId = selectedListingCard.dataset.listingId;
+                localStorage.setItem(`rentme-unavailable-${listingId}`, "true");
+                unavailableListingIds.add(listingId);
+                filterLodging();
+                reservationStatus.textContent += " This place is now hidden from your results on this device; the request is not confirmed until the owner responds.";
+            }
             reservationEmailLink.focus();
-        });
-
-        reservationEmailLink.addEventListener("click", () => {
-            if (reservationIntent !== "rental" || !selectedListingCard) return;
-
-            const listingId = selectedListingCard.dataset.listingId;
-            localStorage.setItem(`rentme-unavailable-${listingId}`, "true");
-            unavailableListingIds.add(listingId);
-            filterLodging();
-            reservationStatus.textContent = "This place is now hidden from your results on this device. The rental request is not confirmed until the owner responds.";
         });
 
         locationDialog.querySelector(".map-dialog-close").addEventListener("click", () => locationDialog.close());
