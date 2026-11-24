@@ -377,6 +377,8 @@
             reservationEmailLink.focus();
         });
 
+        reservationEmailLink.addEventListener("click", () => reservationDialog.close());
+
         locationDialog.querySelector(".map-dialog-close").addEventListener("click", () => locationDialog.close());
         locationDialog.addEventListener("click", (event) => {
             if (event.target === locationDialog) locationDialog.close();
@@ -390,3 +392,4 @@
     <script src="auth.js"></script>
 </body>
 </html>
+
