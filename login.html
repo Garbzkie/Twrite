@@ -147,7 +147,7 @@
                 event.preventDefault();
                 if (!form.reportValidity()) return;
                 sessionStorage.setItem("rentmeRole", accountType === "landlord" ? "owner" : "student");
-                window.location.href = accountType === "student" && returnToLodging ? "findlodging.html" : "index.html";
+                window.location.href = returnToLodging ? "findlodging.html" : "index.html";
             });
         }
 
@@ -165,7 +165,7 @@
             confirmation.setCustomValidity(password.value === confirmation.value ? "" : "Passwords must match.");
             if (!registerForm.reportValidity()) return;
             sessionStorage.setItem("rentmeRole", accountType === "landlord" ? "owner" : "student");
-            window.location.href = accountType === "student" && returnToLodging ? "findlodging.html" : "index.html";
+            window.location.href = returnToLodging ? "findlodging.html" : "index.html";
         });
 
         document.querySelector("#register-confirm-password").addEventListener("input", (event) => {
