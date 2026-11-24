@@ -1,4 +1,4 @@
-const currentRole = sessionStorage.getItem("rentmeRole");
+const currentRole = localStorage.getItem("rentmeRole") || sessionStorage.getItem("rentmeRole");
 const isOwner = currentRole === "owner";
 const ownerRentLink = document.querySelector("#owner-rent-nav");
 const ownerRentCallToAction = document.querySelector("#owner-rent-cta");
@@ -14,6 +14,7 @@ if (logoutLink) logoutLink.hidden = !currentRole;
 
 if (logoutLink) {
     logoutLink.addEventListener("click", () => {
+        localStorage.removeItem("rentmeRole");
         sessionStorage.removeItem("rentmeRole");
     });
 }
